@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 // Root endpoint
@@ -42,6 +44,8 @@ app.get('/', (req, res) => {
   res.json({
     message: 'CRUD API for User Management',
     endpoints: {
+      'POST /api/auth/signup': 'Register a new user',
+      'POST /api/auth/login': 'Login with email and password',
       'POST /api/users': 'Create a new user',
       'GET /api/users': 'Get all users',
       'GET /api/users/:id': 'Get a user by ID',
