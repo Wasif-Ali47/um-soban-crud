@@ -9,13 +9,13 @@ const signToken = (id) =>
 // POST /api/auth/signup
 exports.signup = async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!fullName || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
         message: 'Validation Error',
-        error: 'fullName, email, and password are required',
+        error: 'name, email, and password are required',
       });
     }
 
@@ -36,7 +36,7 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const user = await User.create({ fullName, name: fullName, email, password });
+    const user = await User.create({ name, name: name, email, password });
     const token = signToken(user._id);
 
     res.status(201).json({
@@ -45,7 +45,7 @@ exports.signup = async (req, res) => {
       token,
       data: {
         _id: user._id,
-        fullName: user.fullName,
+        name: user.name,
         email: user.email,
         createdAt: user.createdAt,
       },
@@ -105,7 +105,7 @@ exports.login = async (req, res) => {
       token,
       data: {
         _id: user._id,
-        fullName: user.fullName || user.name,
+        name: user.name || user.name,
         email: user.email,
       },
     });
